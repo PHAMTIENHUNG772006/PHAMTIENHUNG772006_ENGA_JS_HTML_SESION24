@@ -15,8 +15,8 @@ let menu = [
     =============================================
     `,
 ];
-
-let string ='';
+let words = [];
+let string = "";
 do {
   for (let element of menu) {
     console.log(`lựa chọn:`, element);
@@ -28,35 +28,72 @@ do {
       string = prompt(` Mời bạn nhập chuỗi kí tự`);
       break;
     case 2:
-     console.log(string);
+      console.log(string);
       break;
     case 3:
-     console.log(` Độ dài chuỗi là ${string.length}`);
-      break;
-      case 4:
-        let char = prompt("Nhập ký tự cần đếm: ");
-        let count = string.split("").filter(c => c === char).length;
-        console.log(`Ký tự '${char}' xuất hiện ${count} lần trong chuỗi.`);
-        break;
-    case 5:
-        let reversedString = string.split("").reverse().join("");
-        if(string === reversedString){
-            console.log("Chuỗi là chuỗi đối xứng")
-        } else {
-            console.log("Chuỗi không phải là chuỗi đối xứng")
+      let wordCount = new Map();
+      let maxCountString = 0;
+      let mostFrequentWords = [];
+      words = string.toLowerCase().split(" ");
+      for (let word of words) {
+        wordCount.set(word, (wordCount.get(word) || 0) + 1);
+        maxCountString = Math.max(maxCountString, wordCount.get(word));
+      }
+      for (let [word, count] of wordCount) {
+        if (count === maxCountString) {
+          mostFrequentWords.push(word);
         }
-        break;
+      }
+      console.log(
+        `Từ xuất hiện nhiều nhất: ${mostFrequentWords.join(
+          ", "
+        )} với ${maxCountString} lần xuất hiện`
+      );
+
+      break;
+    case 4:
+        words = string.split(" ");
+        let longWords = [words[0]];
+        let shortWords = [words[0]];
+        for (let word of words) {
+          if (word.length > longWords[0].length) {
+            longWords = [word]; 
+          } else if (word.length === longWords[0].length) {
+            longWords.push(word); 
+          }
+        }
+       console.log(`Từ dài nhất: ${longWords.join(", ")} (${longWords[0].length} ký tự)`);
+       console.log(`Từ ngắn nhất: ${shortWords.join(", ")} (${shortWords[0].length} ký tự)`);
+      break;
+    case 5:
+      let charCount = {};
+      let maxCount = 0;
+      let mostChars = [];
+      for (let char of string) {
+        charCount[char] = (charCount[char] || 0) + 1;
+        maxCount = Math.max(maxCount, charCount[char]);
+      }
+      for (let char in charCount) {
+        if (charCount[char] === maxCount) {
+          mostChars.push(char);
+        }
+      }
+      console.log(
+        `Ký tự xuất hiện nhiều nhất: ${mostChars.join(", ")}`
+      );
+      console.log(`Số lần xuất hiện: ${maxCount}`);
+
+      break;
     case 6:
-        let words = string.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1));
-        string = words.join(" ");
-        console.log(`Chuỗi sau khi chuyển đổi: ${string}`);
-        break;
+        let newStr = string.replaceAll(" ", "_");
+        console.log("Chuỗi sau khi thay thế: " + newStr);
+      break;
     case 7:
       console.log(` Đã thoát chương trình `);
       break;
     default:
-        console.log(` dữ liệu sai `);
-        
+      console.log(` dữ liệu sai `);
+
       break;
   }
 } while (choose !== 7);
